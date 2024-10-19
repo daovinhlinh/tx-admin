@@ -1,0 +1,9 @@
+{
+  "name": "Tables",
+  "version": "0.0.0",
+  "main": "Tables.js",
+  "private": true,
+  "devDependencies": {
+    "@types/mui-datatables": "^4.3.12"
+  }
+}
