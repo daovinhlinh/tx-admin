@@ -31,7 +31,7 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [activeTabId, setActiveTabId] = useState(0);
-  const [nameValue, setNameValue] = useState("");
+  // const [nameValue, setNameValue] = useState("");
   const [loginValue, setLoginValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
 
@@ -51,7 +51,7 @@ function Login() {
             centered
           >
             <Tab label="Login" classes={{ root: classes.tab }} />
-            <Tab label="New User" classes={{ root: classes.tab }} />
+            {/* <Tab label="New User" classes={{ root: classes.tab }} /> */}
           </Tabs>
           {activeTabId === 0 && (
             <React.Fragment>
@@ -134,7 +134,7 @@ function Login() {
               </div>
             </React.Fragment>
           )}
-          {activeTabId === 1 && (
+          {/* {activeTabId === 1 && (
             <React.Fragment>
               <Typography variant="h1" className={classes.greeting}>
                 Welcome!
@@ -226,31 +226,9 @@ function Login() {
                 <Typography className={classes.formDividerWord}>or</Typography>
                 <div className={classes.formDivider} />
               </div>
-              {/* <Button
-                size="large"
-                className={classnames(
-                  classes.googleButton,
-                  classes.googleButtonCreating,
-                )}
-              >
-                <img src={google} alt="google" className={classes.googleIcon} />
-                &nbsp;Sign in with Google
-              </Button> */}
             </React.Fragment>
-          )}
+          )} */}
         </div>
-        <Typography color="primary" className={classes.copyright}>
-          © 2014-{new Date().getFullYear()}{" "}
-          <a
-            style={{ textDecoration: "none", color: "inherit" }}
-            href="https://flatlogic.com"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Flatlogic
-          </a>
-          , LLC. All rights reserved.
-        </Typography>
       </div>
     </Grid>
   );

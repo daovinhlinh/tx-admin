@@ -300,7 +300,7 @@ export default function Header() {
               className={classes.profileMenuLink}
               component="a"
               color="primary"
-              href="https://flatlogic.com"
+              // href="https://flatlogic.com"
             >
               Flalogic.com
             </Typography>
