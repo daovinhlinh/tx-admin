@@ -85,7 +85,6 @@ const loginUser = async (
   dispatch: Dispatch,
   username: string,
   password: string,
-  navigate: NavigateFunction,
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
   setError: React.Dispatch<React.SetStateAction<boolean>>
 ) => {

@@ -1,7 +1,9 @@
 import { makeStyles } from "@material-ui/styles";
 import { alpha } from "@material-ui/core/styles/colorManipulator";
+import { ExtendThemeOptions } from "../../themes/default";
+import { SimplePaletteColorOptions } from "@material-ui/core";
 
-export default makeStyles(theme => ({
+export default makeStyles((theme: ExtendThemeOptions) => ({
   logotype: {
     color: "white",
     marginLeft: theme.spacing(2.5),
@@ -73,7 +75,7 @@ export default makeStyles(theme => ({
   inputInput: {
     height: 36,
     padding: 0,
-    paddingRight: 36 + theme.spacing(1.25),
+    paddingRight: 36 + (theme.spacing(1.25) as number),
     width: "100%",
   },
   messageContent: {
@@ -89,7 +91,8 @@ export default makeStyles(theme => ({
   },
   headerMenuItem: {
     "&:hover, &:focus": {
-      backgroundColor: theme.palette.background.light,
+      backgroundColor: (theme.palette.background as SimplePaletteColorOptions)
+        .light,
       // color: "white",
     },
   },
@@ -100,7 +103,7 @@ export default makeStyles(theme => ({
   headerMenuButtonSandwich: {
     marginLeft: 9,
     [theme.breakpoints.down("sm")]: {
-      marginLeft: 0
+      marginLeft: 0,
     },
     padding: theme.spacing(0.5),
   },
@@ -128,9 +131,9 @@ export default makeStyles(theme => ({
   profileMenuIcon: {
     marginRight: theme.spacing(2),
     color: theme.palette.text.hint,
-    '&:hover': {
-      color: theme.palette.primary.main,
-    }
+    "&:hover": {
+      color: (theme.palette.background as SimplePaletteColorOptions).main,
+    },
   },
   profileMenuLink: {
     fontSize: 16,
@@ -144,7 +147,8 @@ export default makeStyles(theme => ({
     display: "flex",
     alignItems: "center",
     "&:hover, &:focus": {
-      backgroundColor: theme.palette.background.light,
+      backgroundColor: (theme.palette.background as SimplePaletteColorOptions)
+        .light,
     },
   },
   messageNotificationSide: {
@@ -167,9 +171,9 @@ export default makeStyles(theme => ({
     marginLeft: theme.spacing(2),
   },
   purchaseBtn: {
-    [theme.breakpoints.down('sm')]: {
-      display: 'none'
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
     },
-    marginRight: theme.spacing(3)
-  }
+    marginRight: theme.spacing(3),
+  },
 }));

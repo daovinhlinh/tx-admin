@@ -1,4 +1,6 @@
 import { ThemeOptions } from "@material-ui/core/styles";
+import { PaletteColorOptions } from "@material-ui/core/styles/createPalette";
+import { Spacing } from "@material-ui/core/styles/createSpacing";
 import tinycolor from "tinycolor2";
 
 const primary = "#536DFE";
@@ -10,7 +12,26 @@ const info = "#9013FE";
 const lightenRate = 7.5;
 const darkenRate = 15;
 
-const defaultTheme: ThemeOptions = {
+export type ExtendThemeOptions = ThemeOptions & {
+  customShadows: {
+    widget: string;
+    widgetDark: string;
+    widgetWide: string;
+  };
+  spacing?: Spacing;
+  palette: PaletteColorOptions & {
+    warning: Record<string, string>;
+  };
+};
+
+export type ExtendPalette = {
+  background: {
+    light: string;
+  };
+  light: string;
+};
+
+const defaultTheme: ExtendThemeOptions = {
   palette: {
     primary: {
       main: primary,
@@ -111,11 +132,11 @@ const defaultTheme: ThemeOptions = {
         fontSize: "0.95rem",
       },
     },
-    PrivateSwitchBase: {
-      root: {
-        marginLeft: 10,
-      },
-    },
+    // PrivateSwitchBase: {
+    //   root: {
+    //     marginLeft: 10,
+    //   },
+    // },
   },
   // colorSchemes: {
   //   dark: false,

@@ -1,8 +1,9 @@
 import { makeStyles } from "@material-ui/styles";
+import { ExtendThemeOptions } from "../../themes/default";
 
 const drawerWidth = 240;
 
-export default makeStyles((theme) => ({
+export default makeStyles((theme: ExtendThemeOptions) => ({
   menuButton: {
     marginLeft: 12,
     marginRight: 36,
@@ -28,7 +29,7 @@ export default makeStyles((theme) => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     overflowX: "hidden",
-    width: theme.spacing(7) + 40,
+    // width: theme.spacing(7) + 40,
     [theme.breakpoints.down("sm")]: {
       width: drawerWidth,
     },

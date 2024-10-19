@@ -27,7 +27,7 @@ interface ISideBarLink {
   isSidebarOpened: boolean;
   nested?: boolean;
   type?: string;
-  children?: React.ReactNode;
+  children?: React.ReactNode[];
 }
 
 export default function SidebarLink({
@@ -63,7 +63,7 @@ export default function SidebarLink({
         button
         className={classes.link}
         classes={{
-          root: classnames(classes.linkRoot, {
+          root: classnames({
             [classes.linkActive]: isLinkActive && !nested,
             [classes.linkNested]: nested,
           }),
@@ -76,7 +76,11 @@ export default function SidebarLink({
               [classes.linkIconActive]: isLinkActive,
             })}
           >
-            {nested ? <Dot color={isLinkActive && "primary"} /> : icon}
+            {nested ? (
+              <Dot size={"small"} color={isLinkActive && "primary"} />
+            ) : (
+              icon
+            )}
           </ListItemIcon>
           <ListItemText
             classes={{
@@ -160,16 +164,27 @@ export default function SidebarLink({
           className={classes.nestedList}
         >
           <List component="div" disablePadding>
-            {children.map((childrenLink) => (
-              <SidebarLink
-                key={childrenLink && childrenLink.link}
-                location={location}
-                isSidebarOpened={isSidebarOpened}
-                classes={classes}
-                nested
-                {...childrenLink}
-              />
-            ))}
+            {children.map(
+              (
+                childrenLink: Record<string, unknown> | unknown,
+                index: number
+              ) => (
+                <SidebarLink
+                  id={index}
+                  key={
+                    (childrenLink &&
+                      (childrenLink as unknown as Record<string, string>)[
+                        "link"
+                      ]) as unknown as number
+                  }
+                  isSidebarOpened={isSidebarOpened}
+                  // location={location}
+                  // classes={classes}
+                  nested
+                  {...(childrenLink as ISideBarLink)}
+                />
+              )
+            )}
           </List>
         </Collapse>
       )}

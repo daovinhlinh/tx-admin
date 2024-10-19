@@ -1,4 +1,4 @@
-import { Button, Grid, Paper, Typography } from "@material-ui/core";
+import { Button, Grid, Paper } from "@material-ui/core";
 import classnames from "classnames";
 import { Link } from "react-router-dom";
 
@@ -7,6 +7,7 @@ import useStyles from "./styles";
 
 // logo
 import logo from "./logo.svg";
+import { Typography } from "../../components/Wrappers/Wrappers";
 
 export default function Error() {
   const classes = useStyles();

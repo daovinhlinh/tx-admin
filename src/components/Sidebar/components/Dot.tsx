@@ -1,9 +1,11 @@
-import React from "react";
+// import React from "react";
 import { makeStyles, useTheme } from "@material-ui/styles";
 import classnames from "classnames";
+import { ExtendThemeOptions } from "../../../themes/default";
+import { Theme } from "@material-ui/core";
 
 // styles
-var useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: ExtendThemeOptions) => ({
   dotBase: {
     width: 8,
     height: 8,
@@ -13,7 +15,7 @@ var useStyles = makeStyles(theme => ({
   },
   dotSmall: {
     width: 5,
-    height: 5
+    height: 5,
   },
   dotLarge: {
     width: 11,
@@ -22,8 +24,8 @@ var useStyles = makeStyles(theme => ({
 }));
 
 export default function Dot({ size, color }) {
-  var classes = useStyles();
-  var theme = useTheme();
+  const classes = useStyles();
+  const theme = useTheme<Theme>();
 
   return (
     <div

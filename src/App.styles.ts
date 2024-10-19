@@ -1,6 +1,7 @@
-import { makeStyles, Theme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
+import { ExtendThemeOptions } from "./themes/default";
 
-export default makeStyles((theme: Theme) => ({
+export default makeStyles((theme: ExtendThemeOptions) => ({
   notificationContainer: {
     display: "flex",
     alignItems: "center",
@@ -67,7 +68,7 @@ export default makeStyles((theme: Theme) => ({
     minHeight: "100vh",
   },
   contentShift: {
-    width: `calc(100vw - ${240 + theme.spacing(6)}px)`,
+    width: `calc(100vw - ${240 + (theme.spacing(6) as number)}px)`,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,

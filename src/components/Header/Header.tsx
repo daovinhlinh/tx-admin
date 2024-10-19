@@ -1,24 +1,23 @@
-import React, { useState } from "react";
 import {
   AppBar,
-  Toolbar,
+  Fab,
   IconButton,
   InputBase,
   Menu,
   MenuItem,
-  Fab,
-  Link,
+  Toolbar,
 } from "@material-ui/core";
 import {
-  Menu as MenuIcon,
+  ArrowBack as ArrowBackIcon,
   MailOutline as MailIcon,
+  Menu as MenuIcon,
   NotificationsNone as NotificationsIcon,
   Person as AccountIcon,
   Search as SearchIcon,
   Send as SendIcon,
-  ArrowBack as ArrowBackIcon,
 } from "@material-ui/icons";
 import classNames from "classnames";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // styles
@@ -31,9 +30,9 @@ import { Badge, Typography } from "../Wrappers/Wrappers";
 
 // context
 import {
-  useLayoutState,
-  useLayoutDispatch,
   toggleSidebar,
+  useLayoutDispatch,
+  useLayoutState,
 } from "../../context/LayoutContext";
 import {
   userAction,
@@ -94,7 +93,7 @@ const notifications = [
   },
 ];
 
-export default function Header(props) {
+export default function Header() {
   const classes = useStyles();
   const navigate = useNavigate();
 

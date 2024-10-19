@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Button,
   Container,
@@ -9,8 +10,8 @@ import {
   Grid,
   TextField,
 } from "@material-ui/core";
-import React, { useEffect, useState, useMemo } from "react";
-import { gameApi, IErrorResponse, IResponseMessage } from "../../api";
+import React, { useEffect, useState } from "react";
+import { gameApi, IResponseMessage } from "../../api";
 import PageTitle from "../../components/PageTitle/PageTitle";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { toast } from "react-toastify";
@@ -37,7 +38,6 @@ import moment from "moment";
 import { Stack } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-import { AxiosResponse } from "axios";
 import { Typography } from "../../components/Wrappers/Wrappers";
 
 type ISpecialDayWithStringDate = Omit<ISpecialDay, "date" | "_id"> & {
@@ -53,7 +53,7 @@ const defaultNewDayData = {
 const CheckIn = () => {
   const apiRef = useGridApiRef();
 
-  const [defaultCoins, setDefaultCoins] = useState(0);
+  const [defaultCoins, setDefaultCoins] = React.useState(0);
   const [specialDays, setSpecialDays] = useState<
     ISpecialDayWithStringDate[] | null
   >(null);
@@ -71,9 +71,9 @@ const CheckIn = () => {
 
   const [newDayData, setNewDayData] = useState(defaultNewDayData);
 
-  const handleUpdateRow = (data: ISpecialDay) => {
-    apiRef.current.updateRows([{ id: data._id, data }]);
-  };
+  // const handleUpdateRow = (data: ISpecialDay) => {
+  //   apiRef.current.updateRows([{ id: data._id, data }]);
+  // };
 
   const getCheckinConfig = async () => {
     const { data, message } = await gameApi.getCheckInConfig();
@@ -112,10 +112,8 @@ const CheckIn = () => {
       } else {
         toast.error(message);
       }
-    } catch (error: AxiosResponse<IErrorResponse> | unknown) {
-      toast.error(
-        (error as AxiosResponse<IErrorResponse>).response.data.message
-      );
+    } catch (error) {
+      toast.error((error as Record<string, any>)["response"].data.message);
     }
 
     setShowNewDayDialog(false);
@@ -137,11 +135,11 @@ const CheckIn = () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
   };
 
-  const handleSaveClick = (id: string) => () => {
+  const handleSaveClick = (id: GridRowId) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
-  const handleDeleteClick = (id: string) => () => {
+  const handleDeleteClick = (id: GridRowId) => () => {
     const row = apiRef.current.getRow(id);
 
     if (row) {

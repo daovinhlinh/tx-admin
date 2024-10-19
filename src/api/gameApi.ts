@@ -31,7 +31,10 @@ const updateUser = (data: IUpdateUserPayload) => {
 };
 
 const updateCoin = (coins: string, userId: string) => {
-  return api.post("/game/updateCoin", { coins, userId });
+  return api.post<unknown, IResponse<IUser>>("/game/updateCoin", {
+    coins,
+    userId,
+  });
 };
 
 const searchUser = (username: string) => {

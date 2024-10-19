@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { Route } from "react-router-dom";
 
 //icons
 
@@ -21,16 +21,15 @@ import Tables from "../../pages/tables";
 import { useLayoutState } from "../../context/LayoutContext";
 import Notifications from "../../pages/notifications";
 
-function Layout(props) {
+function Layout() {
   const classes = useStyles();
-  const navigate = useNavigate();
   // global
   const layoutState = useLayoutState();
 
   return (
     <div className={classes.root}>
       <>
-        <Header history={props.history} />
+        <Header />
         <Sidebar />
         <div
           className={classnames(classes.content, {

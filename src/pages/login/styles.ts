@@ -1,6 +1,7 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, SimplePaletteColorOptions } from "@material-ui/core";
+import { ExtendPalette, ExtendThemeOptions } from "../../themes/default";
 
-export default makeStyles((theme) => ({
+export default makeStyles((theme: ExtendThemeOptions) => ({
   container: {
     height: "100vh",
     width: "100vw",
@@ -12,7 +13,7 @@ export default makeStyles((theme) => ({
     left: 0,
   },
   logotypeContainer: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: (theme.palette.primary as SimplePaletteColorOptions).main,
     width: "60%",
     height: "100%",
     display: "flex",
@@ -111,17 +112,22 @@ export default makeStyles((theme) => ({
   },
   textFieldUnderline: {
     "&:before": {
-      borderBottomColor: theme.palette.primary.light,
+      borderBottomColor: (theme.palette.primary as SimplePaletteColorOptions)
+        .light,
     },
     "&:after": {
-      borderBottomColor: theme.palette.primary.main,
+      borderBottomColor: (theme.palette.primary as SimplePaletteColorOptions)
+        .main,
     },
     "&:hover:before": {
-      borderBottomColor: `${theme.palette.primary.light} !important`,
+      borderBottomColor: `${
+        (theme.palette.primary as SimplePaletteColorOptions).light
+      } !important`,
     },
   },
   textField: {
-    borderBottomColor: theme.palette.background.light,
+    borderBottomColor: (theme.palette as unknown as ExtendPalette).background
+      .light,
   },
   formButtons: {
     width: "100%",

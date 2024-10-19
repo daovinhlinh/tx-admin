@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Dialog,
   DialogActions,
@@ -185,6 +186,7 @@ export default function Tables() {
         headerName: "Coins",
         type: "number",
         editable: true,
+        width: 200,
       },
       {
         field: "actions",
@@ -437,8 +439,8 @@ export default function Tables() {
     return checkInStatusList;
   };
 
-  const getCheckinHistory = async (id: string) => {
-    const { data, message } = await gameApi.getCheckInHistory(id);
+  const getCheckinHistory = async (id: GridRowId) => {
+    const { data, message } = await gameApi.getCheckInHistory(id.toString());
 
     if (message === IResponseMessage.OK) {
       const list = generateCheckInStatusList(data.docs);
@@ -469,7 +471,7 @@ export default function Tables() {
             rowModesModel={rowModesModel}
             onRowModesModelChange={handleRowModesModelChange}
             onRowEditStop={handleRowEditStop}
-            autosizeOnMount
+            // autosizeOnMount
             paginationModel={paginationModel}
             onPaginationModelChange={(models: GridPaginationModel) => {
               if (searchText == "") {

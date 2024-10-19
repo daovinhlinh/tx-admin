@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, FC, useEffect, useState } from "react";
 import { useUserState } from "./UserContext";
 import { io, Socket } from "socket.io-client";
@@ -44,6 +45,7 @@ const SocketProvider: FC<SocketProviderProps> = ({ children }) => {
         newSocket.disconnect();
       };
     }
+    return undefined;
   }, [userData]);
 
   return (

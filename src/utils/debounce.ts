@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-this-alias */
 export const debounce = (
   func: (...args: any[]) => void,
   delay: number

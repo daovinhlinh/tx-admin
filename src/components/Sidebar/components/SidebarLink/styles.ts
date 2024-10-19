@@ -1,20 +1,22 @@
+import { SimplePaletteColorOptions } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+import { ExtendPalette, ExtendThemeOptions } from "../../../../themes/default";
 
-export default makeStyles(theme => ({
+export default makeStyles((theme: ExtendThemeOptions) => ({
   link: {
     textDecoration: "none",
     "&:hover, &:focus": {
-      backgroundColor: theme.palette.background.light,
+      backgroundColor: (theme.palette.background as ExtendPalette).light,
     },
   },
   externalLink: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textDecoration: 'none'
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    textDecoration: "none",
   },
   linkActive: {
-    backgroundColor: theme.palette.background.light,
+    backgroundColor: (theme.palette.background as ExtendPalette).light,
   },
   linkNested: {
     paddingLeft: 0,
@@ -31,7 +33,7 @@ export default makeStyles(theme => ({
     justifyContent: "center",
   },
   linkIconActive: {
-    color: theme.palette.primary.main,
+    color: (theme.palette.primary as SimplePaletteColorOptions).main,
   },
   linkText: {
     padding: 0,
@@ -46,7 +48,7 @@ export default makeStyles(theme => ({
     opacity: 0,
   },
   nestedList: {
-    paddingLeft: theme.spacing(2) + 30,
+    paddingLeft: (theme.spacing(2) as number) + 30,
   },
   sectionTitle: {
     marginLeft: theme.spacing(4.5),

@@ -20,10 +20,8 @@ import logo from "./logo.svg";
 
 // context
 import { userAction, useUserDispatch } from "../../context/UserContext";
-import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const navigate = useNavigate();
   const classes = useStyles();
 
   // global
@@ -47,7 +45,7 @@ function Login() {
         <div className={classes.form}>
           <Tabs
             value={activeTabId}
-            onChange={(e, id) => setActiveTabId(id)}
+            onChange={(_, id) => setActiveTabId(id)}
             indicatorColor="primary"
             textColor="primary"
             centered
@@ -114,7 +112,6 @@ function Login() {
                           userDispatch,
                           loginValue,
                           passwordValue,
-                          navigate,
                           setIsLoading,
                           setError
                         )
@@ -205,7 +202,6 @@ function Login() {
                         userDispatch,
                         loginValue,
                         passwordValue,
-                        navigate,
                         setIsLoading,
                         setError
                       )

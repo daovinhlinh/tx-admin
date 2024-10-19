@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext, useReducer } from "react";
 import { toast } from "react-toastify";
-import { gameApi, IResponseMessage, IUpdateUserPayload } from "../api";
+import { gameApi, IResponseMessage } from "../api";
 import { userApi } from "../api/userApi";
 import { IUser } from "../models/User";
 import {
@@ -12,14 +12,19 @@ interface State {
   user?: {
     data: IUser[];
     page: number;
-    totalPage: number;
+    totalPages: number;
     totalDocs: number;
   };
 }
 
 interface Action {
   type: string;
-  payload?: Record<string, any>;
+  payload?: {
+    data: IUser[];
+    page: number;
+    totalPages: number;
+    totalDocs: number;
+  };
 }
 
 type Dispatch = React.Dispatch<Action>;
@@ -29,20 +34,20 @@ const UserDispatchContext = createContext<React.Dispatch<Action> | undefined>(
   undefined
 );
 
-function gameReducer(state: State, action: Action) {
+const gameReducer: Reducer = (state: State, action: Action) => {
   switch (action.type) {
     case GET_GAME_USER_LIST_SUCCESS:
       return { ...state, user: action.payload };
     case GET_GAME_USER_LIST_FAILED:
       return {
         ...state,
-        user: null,
+        user: undefined,
       };
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
   }
-}
+};
 
 interface ProviderProps {
   children: ReactNode;
@@ -52,7 +57,7 @@ type Reducer = (state: State, action: Action) => State;
 
 function GameProvider({ children }: ProviderProps) {
   const [state, dispatch] = useReducer<Reducer>(gameReducer, {
-    user: null,
+    user: undefined,
   });
 
   return (
@@ -148,10 +153,10 @@ const deleteUser = async (userId: string, state: State, dispatch: Dispatch) => {
   try {
     const result = await gameApi.deleteUser(userId);
 
-    if (result.message === IResponseMessage.OK) {
+    if (result.message === IResponseMessage.OK && state.user != null) {
       const newState = { ...state.user };
 
-      newState.data = newState.data?.filter((item) => item._id !== userId);
+      newState.data = newState.data.filter((item) => item._id !== userId);
       dispatch({ type: GET_GAME_USER_LIST_SUCCESS, payload: newState });
     }
   } catch (error) {
@@ -160,48 +165,49 @@ const deleteUser = async (userId: string, state: State, dispatch: Dispatch) => {
   }
 };
 
-const deleteUsers = async (
-  usernames: string[],
-  state: State,
-  dispatch: Dispatch
-) => {
-  try {
-    const result = await gameApi.deleteUsers(usernames);
-    const newState = state.user?.data.filter(
-      (item) => !usernames.includes(item.username)
-    );
-    dispatch({ type: GET_GAME_USER_LIST_SUCCESS, payload: newState });
-    return result.data;
-  } catch (error) {
-    console.log("result console.error();", error);
-    throw error;
-    // dispatch({ type: GET_GAME_USER_LIST_FAILED });
-  }
-};
+// const deleteUsers = async (
+//   usernames: string[],
+//   state: State,
+//   dispatch: Dispatch
+// ) => {
+//   try {
+//     const result = await gameApi.deleteUsers(usernames);
 
-const updateUser = async (
-  data: IUpdateUserPayload,
-  state: State,
-  dispatch: Dispatch
-) => {
-  try {
-    const result = await gameApi.updateUser(data);
+//     const newState = state.user?.data.filter(
+//       (item) => !usernames.includes(item.username)
+//     );
+//     dispatch({ type: GET_GAME_USER_LIST_SUCCESS, payload: newState });
+//     return result.data;
+//   } catch (error) {
+//     console.log("result console.error();", error);
+//     throw error;
+//     // dispatch({ type: GET_GAME_USER_LIST_FAILED });
+//   }
+// };
 
-    const index = state.user?.data.findIndex(
-      (item) => item._id === result.data._id
-    );
+// const updateUser = async (
+//   data: IUpdateUserPayload,
+//   state: State,
+//   dispatch: Dispatch
+// ) => {
+//   try {
+//     const result = await gameApi.updateUser(data);
 
-    if (index !== -1) {
-      const newState = { ...state.user };
-      newState.data![index!] = result.data;
+//     const index = state.user?.data.findIndex(
+//       (item) => item._id === result.data._id
+//     );
 
-      dispatch({ type: GET_GAME_USER_LIST_SUCCESS, payload: newState });
-    }
-  } catch (error) {
-    console.log("result console.error();", error);
-    throw error;
-  }
-};
+//     if (index !== -1) {
+//       const newState = { ...state.user };
+//       newState.data![index!] = result.data;
+
+//       dispatch({ type: GET_GAME_USER_LIST_SUCCESS, payload: newState });
+//     }
+//   } catch (error) {
+//     console.log("result console.error();", error);
+//     throw error;
+//   }
+// };
 
 const updateCoin = async (
   userId: string,
@@ -211,12 +217,15 @@ const updateCoin = async (
 ) => {
   try {
     const result = await gameApi.updateCoin(coins, userId);
-    const index = state.user?.data.findIndex((item) => item._id === userId);
 
-    if (index !== -1) {
-      const newState = { ...state.user };
-      newState.data![index!] = result.data;
-      dispatch({ type: GET_GAME_USER_LIST_SUCCESS, payload: newState });
+    if (result.message === IResponseMessage.OK) {
+      const index = state.user?.data.findIndex((item) => item._id === userId);
+
+      if (index !== -1) {
+        const newState = { ...state.user! };
+        newState.data![index!] = result.data;
+        dispatch({ type: GET_GAME_USER_LIST_SUCCESS, payload: newState });
+      }
     }
   } catch (error) {
     console.log("result console.error();", error);
@@ -249,8 +258,8 @@ export { GameProvider, useGameState, useGameDispatch };
 export const gameAction = {
   getGameUserList,
   deleteUser,
-  updateUser,
-  deleteUsers,
+  // updateUser,
+  // deleteUsers,
   updateCoin,
   searchUser,
 };

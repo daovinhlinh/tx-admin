@@ -1,6 +1,7 @@
 import { makeStyles } from "@material-ui/styles";
+import { ExtendThemeOptions } from "../../themes/default";
 
-export default makeStyles(theme => ({
+export default makeStyles((theme: ExtendThemeOptions) => ({
   pageTitleContainer: {
     display: "flex",
     justifyContent: "space-between",

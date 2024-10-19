@@ -1,7 +1,16 @@
-import api from "./axios";
+import { IUser } from "../models/User";
+import api, { IResponse } from "./axios";
 
 const getAll = (page?: number, pageSize?: number) => {
-  return api.get("/user/all", {
+  return api.get<
+    unknown,
+    IResponse<{
+      users: IUser[];
+      totalDocs: number;
+      totalPages: number;
+      page: number;
+    }>
+  >("/user/all", {
     params: {
       page,
       limit: pageSize,

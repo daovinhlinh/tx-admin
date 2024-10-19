@@ -1,4 +1,4 @@
-import { Drawer, IconButton, List } from "@material-ui/core";
+import { Drawer, IconButton, List, Theme } from "@material-ui/core";
 import {
   ArrowBack as ArrowBackIcon,
   BorderAll as TableIcon,
@@ -22,6 +22,8 @@ import {
   useLayoutDispatch,
   useLayoutState,
 } from "../../context/LayoutContext";
+
+
 
 const structure = [
   // { id: 0, label: "Dashboard", link: "/app/dashboard", icon: <HomeIcon /> },
@@ -100,7 +102,7 @@ const structure = [
 
 function Sidebar() {
   const classes = useStyles();
-  const theme = useTheme();
+  const theme = useTheme<Theme>();
 
   // global
   const { isSidebarOpened } = useLayoutState();

@@ -13,7 +13,7 @@ const defaultErrors = {
 };
 
 interface IFormDialogProps {
-  onSubmit?: (value: any) => void;
+  onSubmit?: (value: IFormDialogValue) => void;
 }
 
 interface IFormDialogValue {
@@ -28,7 +28,15 @@ interface IFormDialogValue {
 
 export const FormDialog = React.forwardRef((props: IFormDialogProps, ref) => {
   const [open, setOpen] = React.useState(false);
-  const [formValue, setFormValue] = React.useState<IFormDialogValue>({});
+  const [formValue, setFormValue] = React.useState<IFormDialogValue>({
+    coins: 0,
+    email: "",
+    firstName: "",
+    id: "",
+    lastName: "",
+    phone: "",
+    username: "",
+  });
   const [errors, setErrors] = useState(defaultErrors);
 
   const validateField = (name, value) => {
@@ -79,6 +87,7 @@ export const FormDialog = React.forwardRef((props: IFormDialogProps, ref) => {
     });
 
     if (!hasError) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       props.onSubmit && props.onSubmit(formValue);
       handleClose();
     }
@@ -91,7 +100,7 @@ export const FormDialog = React.forwardRef((props: IFormDialogProps, ref) => {
         onClose={handleClose}
         PaperProps={{
           component: "form",
-          onChange: (event) => {
+          onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
             validateField(event.target.name, event.target.value);
             setFormValue({
               ...formValue,
