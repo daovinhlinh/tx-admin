@@ -11,6 +11,7 @@ export default makeStyles((theme: ExtendThemeOptions) => ({
     position: "absolute",
     top: 0,
     left: 0,
+    backgroundColor: "white",
   },
   logotypeContainer: {
     backgroundColor: (theme.palette.primary as SimplePaletteColorOptions).main,
@@ -61,6 +62,7 @@ export default makeStyles((theme: ExtendThemeOptions) => ({
     fontWeight: 500,
     textAlign: "center",
     marginTop: theme.spacing(4),
+    color: "black",
   },
   subGreeting: {
     fontWeight: 500,
@@ -133,7 +135,7 @@ export default makeStyles((theme: ExtendThemeOptions) => ({
     width: "100%",
     marginTop: theme.spacing(4),
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
   },
   forgetButton: {
