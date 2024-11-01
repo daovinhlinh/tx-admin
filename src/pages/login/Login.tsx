@@ -1,21 +1,17 @@
-import React from "react";
-import { useState } from "react";
 import {
-  Grid,
-  CircularProgress,
-  Typography,
   Button,
-  Tabs,
-  Tab,
-  TextField,
+  CircularProgress,
   Fade,
+  Grid,
+  TextField,
+  Typography,
 } from "@material-ui/core";
+import React, { useState } from "react";
 
 // styles
 import useStyles from "./styles";
 
 // logo
-import logo from "./logo.svg";
 // import google from "../../images/google.svg";
 
 // context
@@ -30,7 +26,6 @@ function Login() {
   // local
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [activeTabId, setActiveTabId] = useState(0);
   // const [nameValue, setNameValue] = useState("");
   const [loginValue, setLoginValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
