@@ -2,18 +2,14 @@ import {
   AppBar,
   Fab,
   IconButton,
-  InputBase,
   Menu,
   MenuItem,
   Toolbar,
 } from "@material-ui/core";
 import {
   ArrowBack as ArrowBackIcon,
-  MailOutline as MailIcon,
   Menu as MenuIcon,
-  NotificationsNone as NotificationsIcon,
   Person as AccountIcon,
-  Search as SearchIcon,
   Send as SendIcon,
 } from "@material-ui/icons";
 import classNames from "classnames";
@@ -24,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 import useStyles from "./styles";
 
 // components
-import { Badge, Typography } from "../Wrappers/Wrappers";
+import { Typography } from "../Wrappers/Wrappers";
 // import Notification from "../Notification/Notification";
 // import UserAvatar from "../UserAvatar/UserAvatar";
 
@@ -34,11 +30,7 @@ import {
   useLayoutDispatch,
   useLayoutState,
 } from "../../context/LayoutContext";
-import {
-  userAction,
-  useUserDispatch,
-  useUserState,
-} from "../../context/UserContext";
+import { userAction, useUserDispatch } from "../../context/UserContext";
 
 const messages = [
   {
@@ -101,15 +93,11 @@ export default function Header() {
   const layoutState = useLayoutState();
   const layoutDispatch = useLayoutDispatch();
   const userDispatch = useUserDispatch();
-  const { user } = useUserState();
 
   // local
   const [mailMenu, setMailMenu] = useState(null);
-  const [isMailsUnread, setIsMailsUnread] = useState(true);
   const [notificationsMenu, setNotificationsMenu] = useState(null);
-  const [isNotificationsUnread, setIsNotificationsUnread] = useState(true);
   const [profileMenu, setProfileMenu] = useState(null);
-  const [isSearchOpen, setSearchOpen] = useState(false);
 
   return (
     <AppBar position="fixed" className={classes.appBar}>
