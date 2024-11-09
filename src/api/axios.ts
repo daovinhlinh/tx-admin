@@ -1,4 +1,6 @@
 import axios from "axios";
+import { TOKEN_EXPIRED } from "../context/action";
+import { getDispatchFunction } from "../context/UserContext";
 import { getLocalItem, setLocalItem } from "../services/localData";
 import { authApi } from "./authApi";
 
@@ -88,6 +90,11 @@ api.interceptors.response.use(
             return api(originalRequest);
           })
           .catch((err) => {
+            const dispatch = getDispatchFunction();
+
+            if (dispatch) {
+              dispatch({ type: TOKEN_EXPIRED });
+            }
             return Promise.reject(err);
           });
       }
@@ -116,9 +123,16 @@ api.interceptors.response.use(
           return api(originalRequest);
         } catch (err) {
           processQueue(err, null); // Process the queue with error
+
+          const dispatch = getDispatchFunction();
+
+          if (dispatch) {
+            dispatch({ type: TOKEN_EXPIRED });
+          }
           return Promise.reject(err);
         } finally {
           isRefreshToken = false;
+          originalRequest._retry = false;
         }
       }
     }

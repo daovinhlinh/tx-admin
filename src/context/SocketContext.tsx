@@ -15,7 +15,6 @@ const SocketContext = createContext(defaultValue);
 export const useSocket = () => {
   const context = React.useContext(SocketContext);
   if (context === undefined) {
-    console.log("useSocket is used without a SocketProvider");
     return null;
   }
   return context;

@@ -54,6 +54,8 @@ import {
 import { useStyles } from "./styles";
 import moment from "moment";
 import { ICheckIn, ICheckInConfig } from "../../models/CheckIn";
+import { TOKEN_EXPIRED } from "../../context/action";
+import { useUserDispatch } from "../../context/UserContext";
 
 export enum ConfirmDialogMode {
   Delete = "delete",
@@ -142,6 +144,8 @@ const QuickSearchToolbar = (props: QuickSearchToolbarProps) => {
 export default function Tables() {
   const gameState = useGameState();
   const dispatch = useGameDispatch();
+
+  const userDispatch = useUserDispatch();
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
   const [confirmDialog, setConfirmDialog] = useState<
     | {
@@ -458,6 +462,9 @@ export default function Tables() {
   return (
     <>
       <PageTitle title="Tables" color={"black"} />
+      <Button onClick={() => userDispatch({ type: TOKEN_EXPIRED })}>
+        Token expired
+      </Button>
       <Grid item xs={12}>
         {gameState.user ? (
           <DataGrid

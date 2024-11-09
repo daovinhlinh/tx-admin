@@ -6,6 +6,7 @@ import {
   Outlet,
   Route,
   RouterProvider,
+  useNavigate,
 } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import useStyles from "./App.styles";
@@ -16,18 +17,30 @@ import useStyles from "./App.styles";
 // pages
 
 // context
+import { DialogContent } from "@material-ui/core";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 import classnames from "classnames";
 import * as React from "react";
 import { ToastContainer } from "react-toastify";
 import Header from "./components/Header/Header";
 import Sidebar from "./components/Sidebar/Sidebar";
 import { useLayoutState } from "./context/LayoutContext";
-import { useUserState } from "./context/UserContext";
+import {
+  userAction,
+  useUserDispatch,
+  useUserState,
+} from "./context/UserContext";
+import CheckIn from "./pages/checkin/CheckIn";
 import Error from "./pages/error/Error";
 import Login from "./pages/login/Login";
 import Notifications from "./pages/notifications/Notifications";
 import Tables from "./pages/tables/Tables";
-import CheckIn from "./pages/checkin/CheckIn";
 
 function CloseButton({
   closeToast,
@@ -101,23 +114,55 @@ export default function App() {
 }
 
 function PrivateRoute() {
-  const { isAuthenticated } = useUserState();
+  const { isAuthenticated, isTokenExpired } = useUserState();
+  const dispatch = useUserDispatch();
   const classes = useStyles();
   const layoutState = useLayoutState();
+  const navigate = useNavigate();
 
-  return isAuthenticated ? (
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => {
+    //navigate to login
+    // navigate("/login");
+    userAction.signOut(dispatch, navigate);
+  };
+
+  React.useEffect(() => {
+    if (isTokenExpired) {
+      setOpen(true);
+    }
+  }, [isTokenExpired, isAuthenticated]);
+
+  return (!isAuthenticated && isTokenExpired) || isAuthenticated ? (
     <div className={classes.root}>
-      <>
-        <Header />
-        <Sidebar />
-        <div
-          className={classnames(classes.content, {
-            [classes.contentShift]: layoutState.isSidebarOpened,
-          })}
-        >
-          <Outlet />
-        </div>
-      </>
+      <Header />
+      <Sidebar />
+      <div
+        className={classnames(classes.content, {
+          [classes.contentShift]: layoutState.isSidebarOpened,
+        })}
+      >
+        <Outlet />
+      </div>
+      <Dialog
+        open={open}
+        // onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Alert"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Token expired
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   ) : (
     <Navigate
@@ -129,9 +174,9 @@ function PrivateRoute() {
 }
 
 function PublicRoute() {
-  const { isAuthenticated } = useUserState();
+  const { isAuthenticated, isTokenExpired } = useUserState();
 
-  return isAuthenticated ? (
+  return (!isAuthenticated && isTokenExpired) || isAuthenticated ? (
     <Navigate
       to={{
         pathname: "/",

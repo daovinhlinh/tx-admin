@@ -142,8 +142,8 @@ const getGameUserList = async (
         totalDocs: data.totalDocs,
       },
     });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    console.log("result console.error();", error);
     toast.error("Failed to fetch users");
     dispatch({ type: GET_GAME_USER_LIST_FAILED });
   }

@@ -1,13 +1,25 @@
-import { ReactNode, useReducer, createContext, useContext } from "react";
+import {
+  ReactNode,
+  useReducer,
+  createContext,
+  useContext,
+  useEffect,
+} from "react";
 import { NavigateFunction } from "react-router-dom";
 import { toast } from "react-toastify";
 import { authApi } from "../api";
 import { IUser } from "../models/User";
 import { getLocalItem, setLocalItem } from "../services/localData";
-import { LOGIN_FAILURE, LOGIN_SUCCESS, SIGN_OUT_SUCCESS } from "./action";
+import {
+  LOGIN_FAILURE,
+  LOGIN_SUCCESS,
+  SIGN_OUT_SUCCESS,
+  TOKEN_EXPIRED,
+} from "./action";
 
 interface UserState {
   isAuthenticated: boolean;
+  isTokenExpired: boolean;
   user: IUser | null;
 }
 
@@ -30,16 +42,36 @@ const userReducer = (state: UserState, action: UserAction) => {
     case SIGN_OUT_SUCCESS:
       return {
         ...state,
+        isTokenExpired: false,
+        isAuthenticated: false,
+        user: null,
+      };
+    case TOKEN_EXPIRED:
+      return {
+        ...state,
+        isTokenExpired: true,
         isAuthenticated: false,
         user: null,
       };
     default: {
       return {
+        isTokenExpired: false,
         isAuthenticated: false,
         user: null,
       };
     }
   }
+};
+
+let dispatchFunction: Dispatch | null = null;
+
+// Create setter and getter functions
+export const setDispatchFunction = (dispatch: Dispatch | null) => {
+  dispatchFunction = dispatch;
+};
+
+export const getDispatchFunction = (): Dispatch | null => {
+  return dispatchFunction;
 };
 
 interface UserProviderProps {
@@ -51,8 +83,15 @@ function UserProvider({ children }: UserProviderProps) {
     (state: UserState, action: UserAction) => UserState
   >(userReducer, {
     isAuthenticated: !!getLocalItem("access_token"),
+    isTokenExpired: false,
     user: JSON.parse(getLocalItem("user") ?? "null"),
   });
+
+  useEffect(() => {
+    if (!dispatchFunction) {
+      setDispatchFunction(dispatch);
+    }
+  }, [dispatch]);
 
   return (
     <UserStateContext.Provider value={state}>
@@ -90,39 +129,46 @@ const loginUser = async (
 ) => {
   setError(false);
   setIsLoading(true);
-
-  if (!!username && !!password) {
-    const result = await authApi.login({
-      username: username,
-      password: password,
-    });
-    if (result && result.data && result.data.user.role === "admin") {
-      setLocalItem("access_token", result.data.accessToken);
-      setLocalItem("refresh_token", result.data.refreshToken);
-      setLocalItem("user", JSON.stringify(result.data.user));
-      setError(false);
-      dispatch({
-        type: LOGIN_SUCCESS,
-        payload: {
-          user: result.data.user,
-          isAuthenticated: true,
-        },
+  try {
+    if (!!username && !!password) {
+      const result = await authApi.login({
+        username: username,
+        password: password,
       });
-      // navigate("/");
+
+      if (result && result.data && result.data.user.role === "admin") {
+        setLocalItem("access_token", result.data.accessToken);
+        setLocalItem("refresh_token", result.data.refreshToken);
+        setLocalItem("user", JSON.stringify(result.data.user));
+        setError(false);
+        dispatch({
+          type: LOGIN_SUCCESS,
+          payload: {
+            user: result.data.user,
+            isAuthenticated: true,
+          },
+        });
+        // navigate("/");
+      } else {
+        dispatch({ type: LOGIN_FAILURE });
+        toast.error("Login failed");
+        setError(true);
+      }
+      setIsLoading(false);
+      // setTimeout(() => {
+      //   localStorage.setItem('access_token', 1)
+      //   setError(null)
+      //   setIsLoading(false)
+      //   dispatch({ type: 'LOGIN_SUCCESS' })
+
+      // }, 2000);
     } else {
       dispatch({ type: LOGIN_FAILURE });
-      toast.error("Login failed");
       setError(true);
+      setIsLoading(false);
     }
-    setIsLoading(false);
-    // setTimeout(() => {
-    //   localStorage.setItem('access_token', 1)
-    //   setError(null)
-    //   setIsLoading(false)
-    //   dispatch({ type: 'LOGIN_SUCCESS' })
-
-    // }, 2000);
-  } else {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (_: unknown) {
     dispatch({ type: LOGIN_FAILURE });
     setError(true);
     setIsLoading(false);
