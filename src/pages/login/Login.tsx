@@ -38,11 +38,6 @@ function Login() {
             <Typography variant="h1" className={classes.greeting}>
               Login
             </Typography>
-            <div className={classes.formDividerContainer}>
-              <div className={classes.formDivider} />
-              <Typography className={classes.formDividerWord}>or</Typography>
-              <div className={classes.formDivider} />
-            </div>
             <Fade in={error}>
               <Typography color="secondary" className={classes.errorMessage}>
                 Something is wrong with your login or password :(
